@@ -6,15 +6,59 @@ require_once('rabbitMQLib.inc');
 
 function doLogin($username,$password)
 {
+	echo "DoLogin Function".PHP_EOL;
+	$mydb = new mysqli('127.0.0.1','testuser','12345','testdb');
+
+if ($mydb->errno != 0)
+{
+        echo "failed to connect to database: ". $mydb->error . PHP_EOL;
+        exit(0);
+}
+
+echo "successfully connected to database".PHP_EOL;
+
+$query = "select * from students;";
+
+$response = $mydb->query($query);
+if ($mydb->errno != 0)
+{
+        echo "failed to execute query:".PHP_EOL;
+        echo __FILE__.':'.__LINE__.":error: ".$mydb->error.PHP_EOL;
+        exit(0);
+}
+
     // lookup username in databas
     // check password
-    return true;
+//    return true
     //return false if not valid
+}
+function seanFunc() {
+	$mydb = new mysqli('127.0.0.1','testuser','12345','testdb');
+
+	if ($mydb->errno != 0)
+	{
+        	echo "failed to connect to database: ". $mydb->error . PHP_EOL;
+	        exit(0);
+	}
+
+	echo "successfully connected to database".PHP_EOL;
+
+	$query = "select * from students;";
+
+	$response = $mydb->query($query);
+	if ($mydb->errno != 0)
+	{
+        	echo "failed to execute query:".PHP_EOL;
+	        echo __FILE__.':'.__LINE__.":error: ".$mydb->error.PHP_EOL;
+        	exit(0);
+	}
 }
 
 function requestProcessor($request)
 {
-  echo "received request".PHP_EOL;
+	echo "received request".PHP_EOL;
+	echo "DoLogin Function".PHP_EOL;
+	seanFunc();
   var_dump($request);
   if(!isset($request['type']))
   {
@@ -22,9 +66,20 @@ function requestProcessor($request)
   }
   switch ($request['type'])
   {
-    case "login":
+  case "query":
+	  echo "in query as desired".PHP_EOL;  
+	 $mydb = new mysqli('127.0.0.1','testuser','12345','testdb');
+	if ($mydb->errno != 0)
+        {
+                echo "failed to connect to database: ". $mydb->error . PHP_EOL;
+                exit(0);
+        }
+	$query = $request['query'];
+
+        $response = $mydb->query($query);
+    case "notlogin":
       return doLogin($request['username'],$request['password']);
-    case "validate_session":
+    case "notvalidate_session":
       return doValidate($request['sessionId']);
   }
   return array("returnCode" => '0', 'message'=>"Server received request and processed");
