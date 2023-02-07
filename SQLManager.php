@@ -15,7 +15,7 @@ function requestProcessor($request)
 {
 	echo "received request".PHP_EOL;
 	echo "DoLogin Function".PHP_EOL;
-	registerUser();
+	registerUser($request);
   var_dump($request);
 }
 
@@ -30,31 +30,31 @@ function registerUser($request)
         echo "failed to connect to database: ". $mydb->error . PHP_EOL;
         exit(0);
      }
-
+	echo "are we here".PHP_EOL;
      if(!isset($request['type']))
      {
-        return "ERROR: unsupported message type";
-        switch ($request['type'])
-        {
-            echo "in query as desired".PHP_EOL;
-            case "validate"
-                $username = $request['username'];
-                $query = "SELECT * FROM users WHERE username = '$username'";
-                $response = $mydb->query($query);
+	     return "ERROR: unsupported message type";
+     }
 
+     switch ($request['type']) 
+     {
+      	case "validate":
+                $username = $request['username'];
+                $query = "SELECT * FROM users WHERE username = '$username';";
+                $response = $mydb->query($query);
+		echo "Here as well".PHP_EOL;
                 if (mysqli_num_rows($response) > 0) //already present
                 {
                     $password = $request['password'];
                     $query = "SELECT * FROM users WHERE username = '$username' AND password = '$password';";
                     if (mysqli_num_rows($response) > 0)
-                    {
-                        return array("returnCode" => '0', 'message'=>"Valid Login");
-                        //valid user
+		    {
+			echo "We correctly worked".PHP_EOL;
+                        return array("returnCode" => '0', 'message'=>"Valid Login");			
                     }
                 }
 
-                return return array("returnCode" => '0', 'message'=>"Invalid Login");;
-        }
+                return array("returnCode" => '0', 'message'=>"Invalid Login");
      }
 }
 
