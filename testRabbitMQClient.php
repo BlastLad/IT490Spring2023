@@ -15,9 +15,9 @@ else
 }
 
 $request = array();
-$request['type'] = "query";
-$request['username'] = "steve";
-$request['password'] = "password";
+$request['type'] = "validate";
+$request['username'] = "sean";
+$request['password'] = "testpass";
 $request['query'] = "INSERT INTO students (name, id) VALUES ('Sean', 1);";
 $request['message'] = $msg;
 $response = $client->send_request($request);
