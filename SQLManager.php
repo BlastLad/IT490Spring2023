@@ -15,8 +15,8 @@ function requestProcessor($request)
 {
 	echo "received request".PHP_EOL;
 	echo "DoLogin Function".PHP_EOL;
-	registerUser($request);
-  var_dump($request);
+	var_dump($request);
+	return registerUser($request);
 }
 
 function registerUser($request)
@@ -53,8 +53,19 @@ function registerUser($request)
                         return array("returnCode" => '0', 'message'=>"Valid Login");			
                     }
                 }
-
-                return array("returnCode" => '0', 'message'=>"Invalid Login");
+		return array("returnCode" => '0', 'message'=>"Invalid Login");
+	case 'register':
+		$username = $request['username'];
+		$query = "SELECT * FROM users WHERE username = '$username';";
+		$response = $mydb->query($query);
+		if (mysqli_num_rows($response) > 0) {
+			return array("returnCode" => '0', 'message'=> "User already exists");
+		}
+		else {			
+			$password = $request['password'];
+			$query = "INSERT INTO users VALUES(username, password) VALUES ('$username', '$password');";
+		return array("returnCode" => '0', 'message'=> "User Registered");
+		}
      }
 }
 

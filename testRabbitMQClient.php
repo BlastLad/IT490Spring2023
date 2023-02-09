@@ -17,8 +17,7 @@ else
 $request = array();
 $request['type'] = "validate";
 $request['username'] = "sean";
-$request['password'] = "testpass";
-$request['query'] = "INSERT INTO students (name, id) VALUES ('Sean', 1);";
+$request['password'] = "testpass";;
 $request['message'] = $msg;
 $response = $client->send_request($request);
 //$response = $client->publish($request);
